@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">PhoneBook</string>
+    <string name="contactDetails">Contact Details</string>
+    <string name="edit">Edit</string>
+    <string name="contacts">Contacts</string>
+    <string name="shareContact">Share Contact</string>
+    <string name="deleteContact">Delete Contact</string>
+    <string name="add">+</string>
+    <string name="newContact">New Contact</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
+    <string name="contact">Contact</string>
+    <string name="workplace">Workplace</string>
+    <string name="addNumber">Add Number</string>
+    <string name="number">Phone Number</string>
+    <string name="leftButton">Left Button</string>
+    <string name="rightButton">Right Button</string>
+    <string name="title">Title</string>
 </resources>

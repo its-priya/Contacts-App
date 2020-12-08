@@ -8,5 +8,6 @@ public class Parameters {
     //Keys of Table (contacts_table)
     public static final String KEY_ID= "id";
     public static final String KEY_NAME= "name";
+    public static final String KEY_WORKPLACE= "workplace";
     public static final String KEY_PHONE= "phoneNumber";
 }
