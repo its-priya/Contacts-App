@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            android:paddingRight="20dp"
+            android:paddingRight="15dp"
             android:gravity="end|center_vertical"
             android:text="@string/rightButton"
             android:textAllCaps="false"

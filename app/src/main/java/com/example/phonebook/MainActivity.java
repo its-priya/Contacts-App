@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
     private ArrayList<Contact> contactArrayList;
-    SearchView searchView;
     Button editContacts, addContact;
     TextView pageTitleText;
     @Override
@@ -32,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DbHandler db= new DbHandler(MainActivity.this);
+        contactArrayList= new ArrayList<>(db.getContactList());
 
         editContacts= findViewById(R.id.left);
         pageTitleText= findViewById(R.id.title);
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         pageTitleText.setText(R.string.contacts);
         addContact.setText(R.string.add);
         addContact.setTextSize(30);
+
         addContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,58 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(newContactPage);
             }
         });
-
-        searchView= findViewById(R.id.searchView);
-        //searchView.setQueryHint("Search in " + db.countContacts() + " contact(s)");
-        /*searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                RecyclerViewAdapter.getFilter(query.toString());
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });*/
-
-        contactArrayList= new ArrayList<>();
-
-        Contact priya= new Contact();          // Creating a Contact object.
-        priya.setName("Priya Nandi");
-        priya.setWorkplace("Earth");
-        priya.setPhoneNumber("1234567815");
-        db.addContact(priya);                  // Adding Contact object in database.
-
-        db.addContact(new Contact("Aariya", "Mars","9984567815"));
-        db.addContact(new Contact("Sara",  "","7539514268"));
-        db.addContact(new Contact("Jiya",  "","4576514268"));
-        db.addContact(new Contact("Riya",  "","5147514268"));
-        db.addContact(new Contact("Piya",  "","3127514268"));
-        db.addContact(new Contact("Shrey", "", "1234514268"));
-        db.addContact(new Contact("Gian",  "","8899514268"));
-        db.addContact(new Contact("Rehan", "", "6547514268"));
-
-
-        /*
-        aariya.setName("Aariya Sharma");
-        aariya.setPhoneNumber("7777777890");
-        int affectedRows= db.updateContactById(aariya, 2);        // Update Contact
-        Log.d("dbContacts", "No. of rows affected are: "+affectedRows);
-
-        db.deleteContact("Sara");                                 // Delete Contact
-        */
-
-        List<Contact> contactList= db.getContactList();        // Get the Contact List
-        for(Contact contact: contactList){
-            Log.d("dbContacts", "Id: " + contact.getId() + "\n" +
-                    "Name: " + contact.getName()+
-                    "Workplace: " + contact.getWorkplace()+
-                    "Phone Number " + contact.getPhoneNumber());
-            contactArrayList.add(contact);
-        }
-        Log.d("dbContacts", "You have " + db.countContacts() + " contacts");
+        Log.d("dbContacts", "You have " + db.countContacts() + " contact(s)");
 
         // RecyclerView
         recyclerView= findViewById(R.id.recyclerView);            // RecyclerView Initialization
@@ -107,7 +57,5 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter= new RecyclerViewAdapter(MainActivity.this, contactArrayList);
         recyclerView.setAdapter(recyclerViewAdapter);
-
-        //recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(),DividerItemDecoration.VERTICAL));
     }
 }

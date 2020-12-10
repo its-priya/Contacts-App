@@ -70,6 +70,16 @@ public class DbHandler extends SQLiteOpenHelper {
         cursor.close();
         return contactList;
     }
+    public Contact getContact(int id){
+        SQLiteDatabase db= this.getReadableDatabase();
+        String selectData= "SELECT KEY_NAME, KEY_WORKPLACE, KEY_PHONE FROM "+Parameters.TABLE_NAME + " WHERE " + Parameters.KEY_ID + "=?" + id;
+        Cursor cursor= db.rawQuery(selectData, null);
+        Contact contact = new Contact();
+        contact.setName(cursor.getString(0));
+        contact.setWorkplace(cursor.getString(1));
+        contact.setPhoneNumber(cursor.getString(2));
+        return contact;
+    }
     public int updateContactById(Contact contact, int id){
         SQLiteDatabase db= this.getWritableDatabase();
         ContentValues contactValues= new ContentValues();

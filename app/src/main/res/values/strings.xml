@@ -16,5 +16,6 @@
     <string name="number">Phone Number</string>
     <string name="leftButton">Left Button</string>
     <string name="rightButton">Right Button</string>
+    <string name="editContact">Edit Contact</string>
     <string name="title">Title</string>
 </resources>
