@@ -1,5 +1,6 @@
 package com.example.phonebook;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -24,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
     private ArrayList<Contact> contactArrayList;
-    Button editContacts, addContact;
-    TextView pageTitleText;
+    private Button editContacts, addContact;
+    private TextView pageTitleText;
+    private SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         editContacts= findViewById(R.id.left);
         pageTitleText= findViewById(R.id.title);
         addContact= findViewById(R.id.right);
-
+        searchView= findViewById(R.id.searchView);
         editContacts.setText(R.string.edit);
         pageTitleText.setText(R.string.contacts);
         addContact.setText(R.string.add);
@@ -57,5 +59,19 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter= new RecyclerViewAdapter(MainActivity.this, contactArrayList);
         recyclerView.setAdapter(recyclerViewAdapter);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                recyclerViewAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 }
