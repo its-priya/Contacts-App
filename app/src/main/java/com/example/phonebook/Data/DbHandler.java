@@ -35,7 +35,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
-    public void addContact(Contact contact){
+    public int addContact(Contact contact){
         SQLiteDatabase db= this.getWritableDatabase();
 
         ContentValues contactValues= new ContentValues();
@@ -43,9 +43,10 @@ public class DbHandler extends SQLiteOpenHelper {
         contactValues.put(Parameters.KEY_WORKPLACE, contact.getWorkplace());
         contactValues.put(Parameters.KEY_PHONE, contact.getPhoneNumber());
 
-        db.insert(Parameters.TABLE_NAME, null, contactValues);
+        long newRowId= db.insert(Parameters.TABLE_NAME, null, contactValues);
         Log.d("dbContacts", "Contact successfully Inserted");
         db.close();
+        return (int)newRowId;
     }
     public List<Contact> getContactList(){
         List<Contact> contactList = new ArrayList<>();
@@ -72,22 +73,23 @@ public class DbHandler extends SQLiteOpenHelper {
     }
     public Contact getContact(int id){
         SQLiteDatabase db= this.getReadableDatabase();
-        String selectData= "SELECT KEY_NAME, KEY_WORKPLACE, KEY_PHONE FROM "+Parameters.TABLE_NAME + " WHERE " + Parameters.KEY_ID + "=?" + id;
+        String selectData= "SELECT * FROM "+Parameters.TABLE_NAME + " WHERE " + Parameters.KEY_ID + "=?" + id;
         Cursor cursor= db.rawQuery(selectData, null);
         Contact contact = new Contact();
-        contact.setName(cursor.getString(0));
-        contact.setWorkplace(cursor.getString(1));
-        contact.setPhoneNumber(cursor.getString(2));
+        contact.setId(cursor.getInt(0));
+        contact.setName(cursor.getString(1));
+        contact.setWorkplace(cursor.getString(2));
+        contact.setPhoneNumber(cursor.getString(3));
         return contact;
     }
-    public int updateContactById(Contact contact, int id){
+    /*public int updateContactById(Contact contact, int id){
         SQLiteDatabase db= this.getWritableDatabase();
         ContentValues contactValues= new ContentValues();
         contactValues.put(Parameters.KEY_NAME, contact.getName());
         contactValues.put(Parameters.KEY_WORKPLACE, contact.getWorkplace());
         contactValues.put(Parameters.KEY_PHONE, contact.getPhoneNumber());
         return db.update(Parameters.TABLE_NAME, contactValues,Parameters.KEY_ID + "=?", new String[]{String.valueOf(id)});
-    }
+    }*/
     public int updateContact(Contact contact){
         SQLiteDatabase db= this.getWritableDatabase();
         ContentValues contactValues= new ContentValues();

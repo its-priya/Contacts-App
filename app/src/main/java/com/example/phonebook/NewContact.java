@@ -2,31 +2,29 @@ package com.example.phonebook;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.phonebook.Adapter.RecyclerViewAdapter;
 import com.example.phonebook.ContactModel.Contact;
 import com.example.phonebook.Data.DbHandler;
-
-import org.w3c.dom.Text;
 
 public class NewContact extends AppCompatActivity {
     private Button cancelB, saveB;
     private TextView pageTitleText;
     private EditText addName, addWorkplace, addNumber;
     private String nameVal, workplaceVal, numberVal;
-    private Contact curContact;
-    boolean existContact;
-
+    private boolean existContact;
+    protected Contact editContactObject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +45,17 @@ public class NewContact extends AppCompatActivity {
 
         // Editing a Contact
         existContact = false;
-        final Contact savedContact = (Contact) getIntent().getSerializableExtra("savedContactObject");
-        if (savedContact != null)
+        editContactObject = (Contact) getIntent().getSerializableExtra("contactObject");
+        if (editContactObject != null)
             existContact = true;
+
+        if (existContact) {
+            Log.d("dbContacts", editContactObject.getId()+"");
+            addName.setText(editContactObject.getName());
+            addWorkplace.setText(editContactObject.getWorkplace());
+            addNumber.setText(editContactObject.getPhoneNumber());
+            pageTitleText.setText(R.string.editContact);
+        }
 
         // Disable Save button until any data entered.
         saveB.setEnabled(false);
@@ -70,9 +76,9 @@ public class NewContact extends AppCompatActivity {
                 if (existContact) {
                     //When editing an existing Contact, disable Save Button until any changes has been made in it.
                     //Sets true if all the field has same data as earlier (No changes made in any field)
-                    boolean isChanged = (nameVal.equals(savedContact.getName())
-                            && workplaceVal.equals(savedContact.getWorkplace())
-                            && numberVal.equals(savedContact.getPhoneNumber()));
+                    boolean isChanged = (nameVal.equals(editContactObject.getName())
+                            && workplaceVal.equals(editContactObject.getWorkplace())
+                            && numberVal.equals(editContactObject.getPhoneNumber()));
                     enable = !isChanged;     // if no changes then set false for enable.
                 } else {
                     // When creating a New Contact, disable Save Button until any data has been entered.
@@ -94,12 +100,6 @@ public class NewContact extends AppCompatActivity {
 
             }
         };
-        if (existContact) {
-            addName.setText(savedContact.getName());
-            addWorkplace.setText(savedContact.getWorkplace());
-            addNumber.setText(savedContact.getPhoneNumber());
-            pageTitleText.setText(R.string.editContact);
-        }
         addName.addTextChangedListener(saveTextWatcher);
         addWorkplace.addTextChangedListener(saveTextWatcher);
         addNumber.addTextChangedListener(saveTextWatcher);
@@ -112,42 +112,46 @@ public class NewContact extends AppCompatActivity {
                 nameVal = addName.getText().toString();
                 workplaceVal = addWorkplace.getText().toString();
                 numberVal = addNumber.getText().toString();
-                curContact = new Contact(nameVal, workplaceVal, numberVal);
-
                 if (existContact) {
                     //Update Contact
-                    int affectedRow = db.updateContactById(curContact, savedContact.getId());
-                    if (affectedRow != 0) {
-                        Intent resultIntent = new Intent();
-                        resultIntent.putExtra("updatedContactObject", db.getContact(savedContact.getId()));
-                        db.close();
-                        setResult(RESULT_OK, resultIntent);
-                    }
-                } else {
-                    //New Contact
-                    db.addContact(curContact);
-                    db.close();
+                    editContactObject.setName(nameVal);
+                    editContactObject.setWorkplace(workplaceVal);
+                    editContactObject.setPhoneNumber(numberVal);
 
-                    Intent contactPage = new Intent(getApplicationContext(), ContactPage.class);
-                    contactPage.putExtra("contactObject", curContact);
+                    if(db.updateContact(editContactObject)!=0) {
+                        Log.d("dbContacts", "Updated Successfully!");
+                        Intent updatedContactIntent = new Intent();
+                        updatedContactIntent.putExtra("updatedContactObject", editContactObject);
+                        db.close();
+                        setResult(Activity.RESULT_OK, updatedContactIntent);
+                        finish();
+                    }
+                }
+                else {
+                    //New Contact
+                    Contact newContact= new Contact(nameVal, workplaceVal, numberVal);
+                    int newContactId= db.addContact(newContact);
+                    newContact.setId(newContactId);
+
+                    Intent contactPage = new Intent(NewContact.this, ContactPage.class);
+                    contactPage.putExtra("contactObject", newContact);
+                    db.close();
                     startActivity(contactPage);
                 }
             }
         });
-
         cancelB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent backIntent;
                 if (existContact) {
                     backIntent = new Intent();
-                    setResult(RESULT_CANCELED);
+                    setResult(Activity.RESULT_CANCELED);
                 } else {
                     backIntent = new Intent(NewContact.this, MainActivity.class);
                 }
                 startActivity(backIntent);
             }
         });
-
     }
 }

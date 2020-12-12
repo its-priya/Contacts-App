@@ -4,10 +4,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.app.Instrumentation;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,7 +23,7 @@ public class ContactPage extends AppCompatActivity {
     private Button backToContacts, editContact;
     private TextView pageTitle;
     private LinearLayout contactPageLayout;
-    private Contact savedContact;
+    protected Contact savedContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public class ContactPage extends AppCompatActivity {
         pageTitle.setText(R.string.contactDetails);
         editContact.setText(R.string.edit);
 
-        savedContact = (Contact) getIntent().getSerializableExtra("contactObject");
+        savedContact= (Contact) getIntent().getSerializableExtra("contactObject");
         setDetails(savedContact);
 
         backToContacts.setOnClickListener(new View.OnClickListener() {
@@ -56,38 +60,32 @@ public class ContactPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent editPage = new Intent(ContactPage.this, NewContact.class);
-                editPage.putExtra("savedContactObject", savedContact);
+                editPage.putExtra("contactObject", savedContact);
                 startActivityForResult(editPage, 2);
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 2) {
-            if(resultCode == RESULT_OK) {
-                Contact updatedContact = (Contact) data.getSerializableExtra("updatedContactObject");
-                setDetails(updatedContact);
-            }
-            else if(resultCode == RESULT_CANCELED) {
-                setDetails(savedContact);
-            }
-        }
     }
     protected void setDetails(Contact contact) {
         String nameText = contact.getName().trim();
         String workplaceText = contact.getWorkplace().trim();
         String numberText = contact.getPhoneNumber().trim();
+        Log.d("dbContacts", contact.getId()+"");
 
-        if (numberText.isEmpty()) {
-            contactPageLayout.getChildAt(2).setVisibility(View.GONE);
-        }
         if (nameText.isEmpty() && workplaceText.isEmpty()) {
             nameText += "Contact " + numberText;
         }
+        if (numberText.isEmpty())
+            contactPageLayout.getChildAt(2).setVisibility(View.GONE);
+        else
+            contactPageLayout.getChildAt(2).setVisibility(View.VISIBLE);
         contactName.setText(nameText);
         contactWorkplace.setText(workplaceText);
         contactNumber.setText(numberText);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==2 && resultCode==RESULT_OK){
+            setDetails((Contact)data.getSerializableExtra("updatedContactObject"));
+        }
     }
 }

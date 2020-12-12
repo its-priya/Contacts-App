@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.provider.CalendarContract;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -134,7 +133,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             contactImage.setOnClickListener(this);
         }
-
         @Override
         public void onClick(View view) {
             int position= this.getAdapterPosition();

@@ -1,9 +1,7 @@
 package com.example.phonebook;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,20 +17,20 @@ import com.example.phonebook.ContactModel.Contact;
 import com.example.phonebook.Data.DbHandler;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private RecyclerViewAdapter recyclerViewAdapter;
-    private ArrayList<Contact> contactArrayList;
+    protected static RecyclerViewAdapter recyclerViewAdapter;
+    protected static ArrayList<Contact> contactArrayList;
     private Button editContacts, addContact;
     private TextView pageTitleText;
     private SearchView searchView;
+    protected static DbHandler db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DbHandler db= new DbHandler(MainActivity.this);
+        db= new DbHandler(MainActivity.this);
         contactArrayList= new ArrayList<>(db.getContactList());
 
         editContacts= findViewById(R.id.left);
