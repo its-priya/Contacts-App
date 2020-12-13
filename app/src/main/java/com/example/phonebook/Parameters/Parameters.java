@@ -10,4 +10,5 @@ public class Parameters {
     public static final String KEY_NAME= "name";
     public static final String KEY_WORKPLACE= "workplace";
     public static final String KEY_PHONE= "phoneNumber";
+    public static final String KEY_IMG_URL= "image";
 }

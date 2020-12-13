@@ -18,4 +18,6 @@
     <string name="rightButton">Right Button</string>
     <string name="editContact">Edit Contact</string>
     <string name="title">Title</string>
+    <string name="takePhoto">Take Photo</string>
+    <string name="selectPhoto">Select a Photo</string>
 </resources>
