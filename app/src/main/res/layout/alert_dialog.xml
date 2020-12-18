@@ -15,13 +15,13 @@
             android:id="@+id/firstButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="First Button"
+            android:text="@string/takePhoto"
             android:foreground="@android:color/transparent"
             android:background="@android:color/transparent"
             android:textAllCaps="false"
             android:textColor="@color/colorAccent"/>
         <View
-            android:id="@+id/dialogDividerLine"
+            android:id="@+id/dialogDividerLine1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/LightGreyBkg"/>
@@ -29,11 +29,12 @@
             android:id="@+id/secondButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Second Button"
+            android:text="@string/selectPhoto"
             android:foreground="@android:color/transparent"
             android:background="@android:color/transparent"
             android:textAllCaps="false"
             android:textColor="@color/colorAccent"/>
+
     </LinearLayout>
     <Button
         android:id="@+id/cancelButton"

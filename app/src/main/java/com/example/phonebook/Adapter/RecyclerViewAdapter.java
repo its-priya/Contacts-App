@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
+
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -51,25 +53,45 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
         Contact contact= contactList.get(position);
         String dataText= contact.getName();
+
         if(queryText!=null && !queryText.isEmpty()){
             int startPos= dataText.toLowerCase().indexOf(queryText.toLowerCase());
             int endPos= startPos + queryText.length();
             if(startPos!=-1){
+                //Highlight text searched.
                 Spannable spannable= new SpannableString(dataText);
                 ColorStateList colorStateList= new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor("#03DAC5")});
                 TextAppearanceSpan textAppearanceSpan= new TextAppearanceSpan(null, Typeface.NORMAL, -1, colorStateList, null);
                 spannable.setSpan(textAppearanceSpan, startPos, endPos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.contactName.setText(spannable);
                 holder.contactWorkplace.setText(contact.getWorkplace().trim());
+                if(contact.getImageUri()!=null) {
+                    holder.contactImage.setImageURI(Uri.parse(contact.getImageUri()));
+                    if (holder.contactImage.getDrawable() == null)
+                        holder.contactImage.setImageResource(R.drawable.ic_account_circle);
+                }
+
             }
             else{
                 holder.contactName.setText(contact.getName().trim());
                 holder.contactWorkplace.setText(contact.getWorkplace().trim());
+
+                if(contact.getImageUri()!=null) {
+                    holder.contactImage.setImageURI(Uri.parse(contact.getImageUri()));
+                    if (holder.contactImage.getDrawable() == null)
+                        holder.contactImage.setImageResource(R.drawable.ic_account_circle);
+                }
             }
         }
         else {
             holder.contactName.setText(contact.getName().trim());
             holder.contactWorkplace.setText(contact.getWorkplace().trim());
+
+            if(contact.getImageUri()!=null) {
+                holder.contactImage.setImageURI(Uri.parse(contact.getImageUri()));
+                if (holder.contactImage.getDrawable() == null)
+                    holder.contactImage.setImageResource(R.drawable.ic_account_circle);
+            }
         }
         if(position==getItemCount()-1)
             holder.dividerLine.setVisibility(View.GONE);

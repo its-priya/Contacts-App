@@ -1,5 +1,6 @@
 package com.example.phonebook.ContactModel;
 
+import android.graphics.Bitmap;
 import java.io.Serializable;
 
 public class Contact implements Serializable {
@@ -7,21 +8,28 @@ public class Contact implements Serializable {
     private String name;
     private String workplace;
     private String phoneNumber;
+    private String imageUri;
 
     // Constructors
-    public Contact(int id, String name, String workplace,String phoneNumber) {
+    public Contact(int id, String name, String workplace,String phoneNumber, String imageUri) {
         this.id = id;
         this.name = name;
         this.workplace = workplace;
         this.phoneNumber = phoneNumber;
+        this.imageUri= imageUri;
     }
-
     public Contact(String name, String workplace, String phoneNumber) {
         this.name = name;
         this.workplace = workplace;
         this.phoneNumber = phoneNumber;
     }
-    public Contact(){
+    public Contact(String name, String workplace, String phoneNumber, String imageUri) {
+        this.name = name;
+        this.workplace = workplace;
+        this.phoneNumber = phoneNumber;
+        this.imageUri= imageUri;
+    }
+    public Contact() {
 
     }
 
@@ -54,5 +62,12 @@ public class Contact implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+    public String getImageUri() {
+        return imageUri;
     }
 }

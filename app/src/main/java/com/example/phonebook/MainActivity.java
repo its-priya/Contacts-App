@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
 import android.widget.TextView;
 
 import com.example.phonebook.Adapter.RecyclerViewAdapter;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected static RecyclerViewAdapter recyclerViewAdapter;
     protected static ArrayList<Contact> contactArrayList;
     private Button editContacts, addContact;
+
     private TextView pageTitleText;
     private SearchView searchView;
     protected static DbHandler db;
@@ -37,10 +39,11 @@ public class MainActivity extends AppCompatActivity {
         pageTitleText= findViewById(R.id.title);
         addContact= findViewById(R.id.right);
         searchView= findViewById(R.id.searchView);
+
         editContacts.setText(R.string.edit);
         pageTitleText.setText(R.string.contacts);
-        addContact.setText(R.string.add);
-        addContact.setTextSize(30);
+        addContact.setText("");
+        addContact.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_person_add,0);
 
         addContact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewAdapter= new RecyclerViewAdapter(MainActivity.this, contactArrayList);
         recyclerView.setAdapter(recyclerViewAdapter);
 
+        searchView.setQueryHint("Search in " + contactArrayList.size() + " Contact(s)");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

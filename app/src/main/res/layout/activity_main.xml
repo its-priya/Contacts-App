@@ -13,9 +13,13 @@
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="28dp"
         android:layout_margin="10dp"
-        android:background="@drawable/search_view_bg">
+        android:background="@drawable/search_view_bg"
+        android:gravity="center"
+        app:iconifiedByDefault="false"
+        android:focusable="false"
+        android:focusableInTouchMode="true">
     </androidx.appcompat.widget.SearchView>
 
     <androidx.recyclerview.widget.RecyclerView
