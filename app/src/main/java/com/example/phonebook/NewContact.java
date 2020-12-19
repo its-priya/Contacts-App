@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
@@ -83,8 +82,10 @@ public class NewContact extends AppCompatActivity {
             addName.setText(editContactObject.getName());
             addWorkplace.setText(editContactObject.getWorkplace());
             addNumber.setText(editContactObject.getPhoneNumber());
-            if (editContactObject.getImageUri() != null)
-                addImage.setImageURI(Uri.parse(editContactObject.getImageUri()));
+            if (editContactObject.getImageUri() != null) {
+                imageUri= Uri.parse(editContactObject.getImageUri());
+                addImage.setImageURI(imageUri);
+            }
         }
 
         // Disable Save button until any data entered.
@@ -150,7 +151,8 @@ public class NewContact extends AppCompatActivity {
                     editContactObject.setPhoneNumber(numberVal);
                     if(imageUri!=null)
                         editContactObject.setImageUri(imageUri.toString());
-
+                    else
+                        editContactObject.setImageUri(null);
                     if (db.updateContact(editContactObject) != 0) {
                         Log.d("dbContacts", "Updated Successfully!");
                         Intent updatedContactIntent = new Intent();
@@ -178,7 +180,14 @@ public class NewContact extends AppCompatActivity {
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showImageAlertDialog();
+                 if(imageUri==null) {
+                     Log.d("dbContacts", "New image");
+                     showNewImageAlertDialog();
+                 }
+                 else {
+                     Log.d("dbContacts", "Change image");
+                     showSavedImageAlertDialog();
+                 }
             }
         });
         cancelB.setOnClickListener(new View.OnClickListener() {
@@ -195,13 +204,35 @@ public class NewContact extends AppCompatActivity {
             }
         });
     }
-
-    protected void showImageAlertDialog() {
+    protected void takePhotoUtil(){
+        if (ActivityCompat.checkSelfPermission(NewContact.this, cameraPermission) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(NewContact.this, new String[]{cameraPermission}, CAMERA_REQUEST_CODE);
+        else {
+            openCamera();
+            alertDialog.dismiss();
+        }
+    }
+    protected void selectPhotoUtil(){
+        if (ActivityCompat.checkSelfPermission(NewContact.this, gallaryPermission) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(NewContact.this, new String[]{gallaryPermission}, GALLARY_REQUEST_CODE);
+        else {
+            openGallary();
+            alertDialog.dismiss();
+        }
+    }
+    protected void showNewImageAlertDialog() {
         LayoutInflater dialogInflator = LayoutInflater.from(this);
         View dialogView = dialogInflator.inflate(R.layout.alert_dialog, null);
-        Button takePhoto, selectPhoto, cancelPhoto;
-        takePhoto = dialogView.findViewById(R.id.firstButton);
-        selectPhoto = dialogView.findViewById(R.id.secondButton);
+
+        Button takePhoto, selectPhoto, cancelPhoto, firstButton;
+        View dividerLine1= dialogView.findViewById(R.id.dialogDividerLine1);
+        firstButton= dialogView.findViewById(R.id.firstButton);
+        firstButton.setVisibility(View.GONE);
+        dividerLine1.setVisibility(View.GONE);
+        takePhoto = dialogView.findViewById(R.id.secondButton);
+        takePhoto.setText(R.string.takePhoto);
+        selectPhoto = dialogView.findViewById(R.id.thirdButton);
+        selectPhoto.setText(R.string.selectPhoto);
         cancelPhoto = dialogView.findViewById(R.id.cancelButton);
 
         alertDialog = new AlertDialog.Builder(this)
@@ -214,35 +245,71 @@ public class NewContact extends AppCompatActivity {
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ActivityCompat.checkSelfPermission(NewContact.this, cameraPermission) != PackageManager.PERMISSION_GRANTED)
-                    ActivityCompat.requestPermissions(NewContact.this, new String[]{cameraPermission}, CAMERA_REQUEST_CODE);
-                else {
-                    openCamera();
-                    alertDialog.dismiss();
-                }
+                takePhotoUtil();
             }
         });
         selectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ActivityCompat.checkSelfPermission(NewContact.this, gallaryPermission) != PackageManager.PERMISSION_GRANTED)
-                    ActivityCompat.requestPermissions(NewContact.this, new String[]{gallaryPermission}, GALLARY_REQUEST_CODE);
-                else {
-                    openGallary();
-                    alertDialog.dismiss();
-                }
+                selectPhotoUtil();
             }
         });
         cancelPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageChanged= false;
                 alertDialog.dismiss();
             }
         });
-        imageChanged= false;
+        checkEnableSaveButton();
     }
 
+    protected void showSavedImageAlertDialog() {
+        LayoutInflater dialogInflator = LayoutInflater.from(this);
+        View dialogView = dialogInflator.inflate(R.layout.alert_dialog, null);
+
+        final Button takePhoto, selectPhoto, deletePhoto, cancelPhoto;
+        takePhoto = dialogView.findViewById(R.id.firstButton);
+        selectPhoto = dialogView.findViewById(R.id.secondButton);
+        deletePhoto= dialogView.findViewById(R.id.thirdButton);
+        cancelPhoto= dialogView.findViewById(R.id.cancelButton);
+
+        alertDialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .create();
+        alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+
+        deletePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageChanged= true;
+                imageUri= null;
+                alertDialog.dismiss();
+                addImage.setImageResource(R.drawable.ic_add);
+                checkEnableSaveButton();
+            }
+        });
+
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takePhotoUtil();
+            }
+        });
+        selectPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectPhotoUtil();
+            }
+        });
+        cancelPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+    }
     public void openCamera() {
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePhotoIntent, CAMERA_REQUEST_CODE);
@@ -302,13 +369,16 @@ public class NewContact extends AppCompatActivity {
                 break;
             }
         }
+        checkEnableSaveButton();
+    }
+    protected void checkEnableSaveButton(){
+        // Image change occurs then enable save button.
         boolean hasAnyData= (!addName.getText().toString().trim().isEmpty()
-                        || !addNumber.getText().toString().trim().isEmpty()
-                        || !addWorkplace.getText().toString().trim().isEmpty());
+                || !addNumber.getText().toString().trim().isEmpty()
+                || !addWorkplace.getText().toString().trim().isEmpty());
         if(imageChanged && hasAnyData){
             saveB.setEnabled(true);
             saveB.setTextColor(getColor(R.color.colorAccent));
         }
-        imageChanged= false;
     }
 }

@@ -85,13 +85,19 @@ public class ContactPage extends AppCompatActivity {
     protected void showDeleteDialog() {
         LayoutInflater dialogInflator = LayoutInflater.from(this);
         View dialogView = dialogInflator.inflate(R.layout.alert_dialog, null);
-        Button firstButton, deleteButton, cancelButton;
-        View dividerLine = dialogView.findViewById(R.id.dialogDividerLine1);
-        dividerLine.setVisibility(View.GONE);
+        Button firstButton, secondButton, deleteButton, cancelButton;
+        View dividerLine1, dividerLine2;
+        dividerLine1= dialogView.findViewById(R.id.dialogDividerLine1);
+        dividerLine2= dialogView.findViewById(R.id.dialogDividerLine2);
+        dividerLine1.setVisibility(View.GONE);
+        dividerLine2.setVisibility(View.GONE);
         firstButton = dialogView.findViewById(R.id.firstButton);
-        deleteButton = dialogView.findViewById(R.id.secondButton);
+        secondButton= dialogView.findViewById(R.id.secondButton);
+        deleteButton = dialogView.findViewById(R.id.thirdButton);
         cancelButton = dialogView.findViewById(R.id.cancelButton);
+
         firstButton.setVisibility(View.GONE);
+        secondButton.setVisibility(View.GONE);
         deleteButton.setText("Delete Contact");
         deleteButton.setTextColor(Color.RED);
 
@@ -147,8 +153,9 @@ public class ContactPage extends AppCompatActivity {
         contactWorkplace.setText(workplaceText);
         contactNumber.setText(numberText);
         try {
-            contactImage.setImageURI(Uri.parse(imageUriText));
-            if(contactImage.getDrawable()==null)
+            if(imageUriText!=null)
+                contactImage.setImageURI(Uri.parse(imageUriText));
+            else
                 contactImage.setImageResource(R.drawable.ic_account_circle);
         } catch (Exception e) {
             e.printStackTrace();
