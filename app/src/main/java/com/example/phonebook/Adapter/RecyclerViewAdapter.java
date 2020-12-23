@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -152,7 +153,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             contactWorkplace= itemView.findViewById(R.id.workplace);
             contactImage= itemView.findViewById(R.id.image);
             dividerLine= itemView.findViewById(R.id.dividerLine);
-
             contactImage.setOnClickListener(this);
         }
         @Override

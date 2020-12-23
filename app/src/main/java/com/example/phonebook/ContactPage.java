@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.example.phonebook.Data.DbHandler;
 public class ContactPage extends AppCompatActivity {
     private TextView contactName, contactWorkplace, contactNumber;
     private Button backToContacts, editContact, deleteContact;
+    private ImageButton msgContact;
     private ImageView contactImage;
     private TextView pageTitle;
     private LinearLayout contactPageLayout;
@@ -42,6 +44,7 @@ public class ContactPage extends AppCompatActivity {
         pageTitle = findViewById(R.id.title);
         editContact = findViewById(R.id.right);
         deleteContact = findViewById(R.id.deleteContact);
+        msgContact= findViewById(R.id.textSMS);
         backToContacts.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_back,0,0,0);
 
         contactPageLayout = findViewById(R.id.contactPageLayout);
@@ -78,6 +81,24 @@ public class ContactPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showDeleteDialog();
+            }
+        });
+        contactNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent callIntent= new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:" + contactNumber.getText()));
+                startActivity(callIntent);
+            }
+        });
+        msgContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent msgIntent= new Intent();
+                msgIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                msgIntent.setType("vnd.android-dir/mms-sms");
+                msgIntent.setData(Uri.parse("sms:" + contactNumber.getText()));
+                startActivity(msgIntent);
             }
         });
     }

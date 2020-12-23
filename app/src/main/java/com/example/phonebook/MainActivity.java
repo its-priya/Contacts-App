@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.phonebook.Adapter.RecyclerViewAdapter;
@@ -24,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     protected static RecyclerViewAdapter recyclerViewAdapter;
     protected static ArrayList<Contact> contactArrayList;
     private Button editContacts, addContact;
-
     private TextView pageTitleText;
     private SearchView searchView;
     protected static DbHandler db;

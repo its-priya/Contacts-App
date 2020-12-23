@@ -90,28 +90,22 @@
                 android:id="@+id/contactNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
+                android:layout_weight="8"
                 android:gravity="center_vertical"
                 android:paddingStart="4dp"
                 android:text="@string/number"
                 android:textColor="@android:color/black"
+                android:drawableEnd="@drawable/ic_phone"
+                android:paddingRight="10dp"
                 android:textSize="16sp" />
 
-            <ImageButton
-                android:id="@+id/phoneCall"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:backgroundTint="@android:color/transparent"
-                android:src="@drawable/ic_phone" />
-
-            <ImageButton
+            <!--<ImageButton
                 android:id="@+id/videoCall"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/transparent"
-                android:src="@drawable/ic_video_call" />
+                android:src="@drawable/ic_video_call" />-->
 
             <ImageButton
                 android:id="@+id/textSMS"
