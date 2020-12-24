@@ -5,7 +5,6 @@
     <string name="contacts">Contacts</string>
     <string name="shareContact">Share Contact</string>
     <string name="deleteContact">Delete Contact</string>
-    <string name="add">+</string>
     <string name="newContact">New Contact</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
@@ -21,4 +20,5 @@
     <string name="takePhoto">Take Photo</string>
     <string name="selectPhoto">Select a Photo</string>
     <string name="deletePhoto">Delete Photo</string>
+    <string name="call">Call</string>
 </resources>

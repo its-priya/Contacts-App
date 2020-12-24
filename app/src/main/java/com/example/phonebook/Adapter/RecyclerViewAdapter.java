@@ -19,9 +19,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.phonebook.ContactModel.Contact;
@@ -140,11 +142,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             notifyDataSetChanged();
         }
     };
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView contactName;
         TextView contactWorkplace;
         ImageView contactImage;
         View dividerLine;
+        public LinearLayout viewBackground;
+        public ConstraintLayout viewForeground;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -153,6 +157,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             contactWorkplace= itemView.findViewById(R.id.workplace);
             contactImage= itemView.findViewById(R.id.image);
             dividerLine= itemView.findViewById(R.id.dividerLine);
+            viewForeground= itemView.findViewById(R.id.viewForeground);
+            viewBackground= itemView.findViewById(R.id.viewBackground);
             contactImage.setOnClickListener(this);
         }
         @Override
