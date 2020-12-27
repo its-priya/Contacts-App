@@ -21,4 +21,7 @@
     <string name="selectPhoto">Select a Photo</string>
     <string name="deletePhoto">Delete Photo</string>
     <string name="call">Call</string>
+    <string name="message">Message</string>
+    <string name="deleteTitle">Batch Delete Contacts</string>
+    <string name="deleteAllContacts">Delete All Contacts</string>
 </resources>

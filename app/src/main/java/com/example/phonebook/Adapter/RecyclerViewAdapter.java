@@ -15,9 +15,9 @@ import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.phonebook.ContactModel.Contact;
 import com.example.phonebook.ContactPage;
 
+import com.example.phonebook.MainActivity;
 import com.example.phonebook.R;
 
 import java.util.ArrayList;
@@ -53,9 +54,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
     // What will happen after creating the ViewHolder object?
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Contact contact= contactList.get(position);
         String dataText= contact.getName();
+
+        if(MainActivity.isDeleteMode) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+        }
+        else
+            holder.checkBox.setVisibility(View.INVISIBLE);
+
+        if(MainActivity.isSelectedAll.isChecked())
+            holder.checkBox.setChecked(true);
+        else
+            holder.checkBox.setChecked(false);
 
         if(queryText!=null && !queryText.isEmpty()){
             int startPos= dataText.toLowerCase().indexOf(queryText.toLowerCase());
@@ -147,6 +159,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView contactWorkplace;
         ImageView contactImage;
         View dividerLine;
+        CheckBox checkBox;
         public LinearLayout viewBackground;
         public ConstraintLayout viewForeground;
         public ViewHolder(@NonNull View itemView) {
@@ -159,6 +172,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             dividerLine= itemView.findViewById(R.id.dividerLine);
             viewForeground= itemView.findViewById(R.id.viewForeground);
             viewBackground= itemView.findViewById(R.id.viewBackground);
+            checkBox= itemView.findViewById(R.id.checkBox);
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MainActivity.startSelection(view, getAdapterPosition());
+                }
+            });
             contactImage.setOnClickListener(this);
         }
         @Override

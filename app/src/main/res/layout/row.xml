@@ -32,7 +32,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white">
-
         <androidx.cardview.widget.CardView
             android:id="@+id/imageHolder"
             android:layout_width="58dp"
@@ -76,27 +75,15 @@
             app:layout_constraintStart_toStartOf="@+id/name"
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
-        <ImageButton
-            android:id="@+id/call"
+        <CheckBox
+            android:id="@+id/checkBox"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="5dp"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_phone"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!--<ImageButton
-            android:id="@+id/sms"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="5dp"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_textsms"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
+            app:layout_constraintTop_toTopOf="parent"
+            android:checked="false"/>
 
         <View
             android:id="@+id/dividerLine"

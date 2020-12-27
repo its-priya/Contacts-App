@@ -2,7 +2,6 @@ package com.example.phonebook;
 
 import android.graphics.Canvas;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
