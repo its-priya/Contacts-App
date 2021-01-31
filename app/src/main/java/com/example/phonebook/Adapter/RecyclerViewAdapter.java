@@ -151,6 +151,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         protected void publishResults(CharSequence keyword, FilterResults filteredResult) {
             contactList.clear();
             contactList.addAll((ArrayList<Contact>)filteredResult.values);
+            if(contactList.size()==0){
+                MainActivity.recyclerView.setVisibility(View.GONE);
+                MainActivity.noContactsMsg.setText(R.string.noMatchedContacts);
+                MainActivity.noContactsMsg.setVisibility(View.VISIBLE);
+            }else{
+                MainActivity.recyclerView.setVisibility(View.VISIBLE);
+                MainActivity.noContactsMsg.setVisibility(View.GONE);
+            }
             notifyDataSetChanged();
         }
     };

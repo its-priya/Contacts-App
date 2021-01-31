@@ -26,7 +26,7 @@ import com.example.phonebook.Data.DbHandler;
 
 public class ContactPage extends AppCompatActivity {
     private TextView contactName, contactWorkplace, contactNumber;
-    private Button backToContacts, editContact, deleteContact;
+    private Button backToContacts, editContact, deleteContact, shareContact;
     private ImageButton msgContact;
     private ImageView contactImage;
     private TextView pageTitle;
@@ -45,6 +45,7 @@ public class ContactPage extends AppCompatActivity {
         editContact = findViewById(R.id.right);
         deleteContact = findViewById(R.id.deleteContact);
         msgContact= findViewById(R.id.textSMS);
+        shareContact= findViewById(R.id.shareContact);
         backToContacts.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_back,0,0,0);
 
         contactPageLayout = findViewById(R.id.contactPageLayout);
@@ -99,6 +100,20 @@ public class ContactPage extends AppCompatActivity {
                 msgIntent.setType("vnd.android-dir/mms-sms");
                 msgIntent.setData(Uri.parse("sms:" + contactNumber.getText()));
                 startActivity(msgIntent);
+            }
+        });
+        shareContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent= new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+                if(contactPageLayout.getChildAt(2).getVisibility()==View.GONE)
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, contactName.getText());
+                else
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, contactNumber.getText());
+                Intent appChooserIntent= Intent.createChooser(sendIntent, getString(R.string.shareContact));
+                startActivity(appChooserIntent);
             }
         });
     }

@@ -38,11 +38,12 @@ import com.example.phonebook.Data.DbHandler;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
-    private RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
     protected static RecyclerViewAdapter recyclerViewAdapter;
     protected static ArrayList<Contact> contactArrayList;
     private Button editContacts, addContact;
     private TextView pageTitleText;
+    public static TextView noContactsMsg;
     public static SearchView searchView;
     public static CheckBox isSelectedAll;
     protected static DbHandler db;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         addContact = findViewById(R.id.right);
         searchView = findViewById(R.id.searchView);
         isSelectedAll= findViewById(R.id.selectAll);
+        noContactsMsg= findViewById(R.id.noContactsMsg);
 
         editContacts.setText(R.string.edit);
         pageTitleText.setText(R.string.contacts);
@@ -92,6 +94,14 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
         recyclerViewAdapter = new RecyclerViewAdapter(MainActivity.this, contactArrayList);
         recyclerView.setAdapter(recyclerViewAdapter);
 
+        if(contactArrayList.size()==0){
+            recyclerView.setVisibility(View.GONE);
+            noContactsMsg.setText(getText(R.string.noContacts));
+            noContactsMsg.setVisibility(View.VISIBLE);
+        }else{
+            recyclerView.setVisibility(View.VISIBLE);
+            noContactsMsg.setVisibility(View.GONE);
+        }
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.RIGHT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
@@ -140,7 +150,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerItemTouch
                 OnDeleteToolbar.updateToolbarText(counter);
             }
         });
+
     }
+
     public static void startSelection(View curView, int curPos){
         if(((CheckBox)curView).isChecked()) {
             selectedContactList.add(contactArrayList.get(curPos));

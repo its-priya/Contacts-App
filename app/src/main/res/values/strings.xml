@@ -24,4 +24,6 @@
     <string name="message">Message</string>
     <string name="deleteTitle">Batch Delete Contacts</string>
     <string name="deleteAllContacts">Delete All Contacts</string>
+    <string name="noContacts">No Contacts to display</string>
+    <string name="noMatchedContacts">No matches found</string>
 </resources>
